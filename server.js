@@ -1,9 +1,11 @@
 const express = require('express');
 const axios = require('axios');
 require('dotenv').config();
+const cors = require('cors');
 
 const app = express();
 const port = 3000;
+app.use(cors());
 
 app.get('/reviews/:placeName', async (req, res) => {
     const placeName = req.params.placeName;
@@ -12,7 +14,7 @@ app.get('/reviews/:placeName', async (req, res) => {
     try {
         const searchResponse = await axios.get(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${placeName}&key=${apiKey}`);
         const results = searchResponse.data.results;
-    
+        console.log(results);
         if (results.length === 0) {
             res.json({ reviews: [], message: 'Place not found' });
             return;
